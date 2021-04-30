@@ -2,19 +2,21 @@ import pytest
 from skpy import Skype
 
 from dialogs.absent_office import AbsentOffice
+from data.users import Users
+from data.alf import Alf
 
 
 @pytest.fixture()
 def skype_connect():
-    sk = Skype('chatbottestqa@gmail.com', '9TcisuIv', '_token.txt')
+    sk = Skype(Users.test_user_1['email'], Users.test_user_1['password'], '_token.txt')
     return sk
 
 
 @pytest.fixture()
 def create_chat(skype_connect):
-    ch = skype_connect.chats.create(members=('4616742d-0abe-4a74-a951-ae547424add6', 'live:.cid.f000db266a490222'))
-    yield ch
-    # delete chat
+    chat = skype_connect.chats.create(members=(Alf.dev['id'], Users.test_user_chak['id']))
+    yield chat
+    # chat.delete()
 
 
 @pytest.fixture()
